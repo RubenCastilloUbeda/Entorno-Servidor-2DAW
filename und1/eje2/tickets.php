@@ -28,7 +28,22 @@
         foreach ($productos as $producto => $precio) {
             echo "$producto: $precio <br>";
         }
-    
+
+        $totalCompra=0;
+        $i=0;
+
+        foreach ($productos as $producto => $precio) {
+            $cantidad = $cantidadesCompradas[$i];
+            if ($cantidad>0) {
+                $subtotal = $cantidad*$precio;
+                $totalCompra += $subtotal;
+            }
+            $i++;
+        }
+        echo "$totalCompra €";
+
+        
+
         ?>
         </tbody>
     </table>
