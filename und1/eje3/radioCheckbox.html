@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Datos personales</title>
+</head>
+
+<body>
+    <h1>Datos personales</h1>
+    <form action="porcesarDatos.php" method="POST">
+        <label for="nombre">Nombre</label>
+        <input type="text" id="nombre" name="nombre" maxlength="20" required>
+        <br>
+        <label for="apellidos">Apellidos</label>
+        <input type="text" id="apellidos" name="apellidos" maxlength="20" required>
+        <br>
+        <div>
+            <label for="edad">Edad</label>
+            <select name="Edad">
+                <option value="Menos de 20 años">Menos de 20 años</option>
+                <option value="Entre 20 y 39 años">Entre 20 y 39 años</option>
+                <option value="Entre 40 y 59 años">Entre 40 y 59 años</option>
+                <option value="60 años o más">60 años o más</option>
+        </div>
+        <div>
+            <label for="peso">Peso</label>
+            <input type="text" id="peso" name="peso" required>
+        </div>
+        <br>
+        <div>
+            <label for="sexo">Selecciona el sexo</label>
+            <br>
+            <label for="sexo">Masculino</label>
+            <input type="radio" name="sexo" id="sexo" value="masculino">
+            <label for="sexo">Femenino</label>
+            <input type="radio" name="sexo" id="sexo" value="femenino">
+        </div>
+        <br>
+        <div>
+            <label for="estado-civil">Selecciona estado civil</label>
+            <label for="sexo">Soltero</label>
+            <input type="radio" name="soltero" id="soltero" value="soltero">
+            <label for="sexo">casado</label>
+            <input type="radio" name="casado" id="casado" value="casado">
+            <label for="sexo">Otro</label>
+            <input type="radio" name="otro" id="otro" value="otro">
+        </div>
+        <br>
+        <div>
+            <label for="aficiones">Elige tus aficiones</label>
+            <label for="aficiones">Cine</label>
+            <input type="checkbox" name="cine" id="cine">
+            <label for="aficiones">literatura</label>
+            <input type="checkbox" name="literatura" id="literatura">
+            <label for="aficiones">tebeos</label>
+            <input type="checkbox" name="tebeos" id="tebeos">
+            <label for="aficiones">deporte</label>
+            <input type="checkbox" name="deporte" id="deporte">
+            <label for="aficiones">musica</label>
+            <input type="checkbox" name="musica" id="musica">
+            <label for="aficiones">television</label>
+            <input type="checkbox" name="television" id="television">
+        </div>
+        <br>
+        <div>
+            <input type="submit" value="Enviar">
+            <input type="reset" value="Borrar">
+        </div>
+    </form>
+</body>
+
+</html>
