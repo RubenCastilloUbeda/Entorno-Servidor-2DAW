@@ -8,7 +8,7 @@
 
 <body>
     <h1>Datos personales</h1>
-    <form action="porcesarDatos.php" method="POST">
+    <form action="procesarDatos.php" method="POST">
         <label for="nombre">Nombre</label>
         <input type="text" id="nombre" name="nombre" maxlength="20" required>
         <br>
@@ -17,12 +17,14 @@
         <br>
         <div>
             <label for="edad">Edad</label>
-            <select name="Edad">
+            <select name="edad" id="edad">
                 <option value="Menos de 20 años">Menos de 20 años</option>
                 <option value="Entre 20 y 39 años">Entre 20 y 39 años</option>
                 <option value="Entre 40 y 59 años">Entre 40 y 59 años</option>
                 <option value="60 años o más">60 años o más</option>
+            </select>
         </div>
+        <br>
         <div>
             <label for="peso">Peso</label>
             <input type="text" id="peso" name="peso" required>

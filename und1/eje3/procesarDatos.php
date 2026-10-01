@@ -6,32 +6,62 @@
     Quinto:crear el html pero dentro de la etiqueta <?php mostrando los resultados con echo 
     Buena práctica crear funciones que hagan comprobaciones */
 
-    $apellidos = $_POST["apellidos"];
-    $peso = $_POST["peso"];
-    $sexo = $_POST["sexo"];
-    $estadoCivil = $_POST["estado-civil"];
-    $aficiones = $_POST["aficiones"];
+function mostrar($valor): string {
+    return htmlspecialchars((string) $valor, ENT_QUOTES, 'UTF-8');
+}
 
+if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
+    http_response_code(405);
+    exit('Envía el formulario mediante POST.');
+}
 
-// <!DOCTYPE html>
-// <html lang="en">
-// <head>
-//     <meta charset="UTF-8">
-//     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-//     <title>Document</title>
-// </head>
-// <body>
-//     <h1><?= $nombre <?= $apellidos</h1>
-//     <div>
-//         <p>Edad:  $edad</p>
-//         <p>Sexo:  $sexo</p>
-//         <p>Peso:  $peso</p>
-//         <ul>
-//             <?php  foreach ($aficiones as $aficion) {
-//                 echo "<li> $aficion </li>";
-//             } 
-//
-//         </ul>
-//     </div>
-// </body>
-// </html>
+$nombre = trim((string) ($_POST['nombre'] ?? ''));
+$apellidos = trim((string) ($_POST['apellidos'] ?? ''));
+$edad = $_POST["edad"];
+$peso = $_POST["peso"] ;
+$sexo = $_POST["sexo"];
+$estadoCivil = $_POST["estado-civil"];
+$aficiones = $_POST["aficiones"];
+
+echo '<!doctype html>';
+echo '<html lang="es">';
+echo '<head>';
+echo '<meta charset="utf-8">';
+echo '<title>Datos personales</title>';
+echo '</head>';
+echo '<body>';
+
+echo '<h1>'
+    . mostrar($nombre) 
+    . ' '
+    . mostrar($apellidos)
+    . '</h1>';
+
+echo '<p>Edad: ' . mostrar($edad) . '</p>';
+echo '<p>Peso: ' . mostrar($peso) . ' kg</p>';
+
+echo '<p>Sexo: '
+    . mostrar($sexo)
+    . '</p>';
+
+echo '<p>Estado civil: '
+    . mostrar($estadoCivil)
+    . '</p>';
+
+echo '<h2>Aficiones:</h2>';
+echo '<ul>';
+
+foreach ($aficiones as $aficion) {
+    echo '<li>'
+        . mostrar($aficion)
+        . '</li>';
+}
+
+if (!$aficiones) {
+    echo '<li>Ninguna seleccionada</li>';
+}
+
+echo '</ul>';
+echo '</body>';
+echo '</html>';
+
