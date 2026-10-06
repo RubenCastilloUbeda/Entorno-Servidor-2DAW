@@ -26,6 +26,21 @@ foreach ($asignaturas as $asignatura) {
         exit("Asignatura no valida.");
     }
 }
+
+
+foreach ($asignaturas as $asignatura) {
+    $datos=$horario[$asignatura];
+    echo '<span>' . $asignatura . '</span>';
+    echo '<br>'; 
+    foreach ($datos as $dia => $hora) {
+        $i=0;
+        echo '<span>' . $dia[$i] ." -> ". $hora[$i] . '</span>' ;
+        echo '<br>';
+        $i++;
+    }
+}
+
+
 echo 'Pendiente de implementar el ejercicio 05.';
 echo '<!DOCTYPE html>';
 echo '<html lang="en">';
