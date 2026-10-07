@@ -18,7 +18,7 @@ function mostrar($valor): string {
     return htmlspecialchars((string) $valor, ENT_QUOTES, 'UTF-8');
 }
 
-$asignaturasValidas = ["Ingles","DAW","DIW", "DWEC", "DWES", "IPE_II", "Proyecto","Optativa"];
+$asignaturasValidas = array_keys($horario);
 
 $asignaturas = $_POST['asignaturas'] ?? []; /* [] significa que llega vacio / cuando es un array no se pone el nombre del name del html con []*/
 foreach ($asignaturas as $asignatura) {
@@ -26,20 +26,6 @@ foreach ($asignaturas as $asignatura) {
         exit("Asignatura no valida.");
     }
 }
-
-
-foreach ($asignaturas as $asignatura) {
-    $datos=$horario[$asignatura];
-    echo '<span>' . $asignatura . '</span>';
-    echo '<br>'; 
-    foreach ($datos as $dia => $hora) {
-        $i=0;
-        echo '<span>' . $dia[$i] ." -> ". $hora[$i] . '</span>' ;
-        echo '<br>';
-        $i++;
-    }
-}
-
 
 echo 'Pendiente de implementar el ejercicio 05.';
 echo '<!DOCTYPE html>';
@@ -52,13 +38,22 @@ echo '</head>';
 echo '<body>';
 echo    '<h1>' . "Asignaturas -> " . '</h1>';
 echo    '<ul>';
-    foreach($asignaturas as $asignatura) {
-        echo '<li>' . mostrar($asignatura) . '</li>';
-        echo '<br>';
-    };
+
     if (!$asignaturas) {
         echo '<li>Ninguna seleccionada</li>';
     }
+
+    foreach ($asignaturas as $asignatura) {
+    $datos=$horario[$asignatura];
+    echo '<span>' . $asignatura . '</span>';
+    echo '<br>'; 
+    foreach ($datos as $dia => $hora) {
+        for ($i=0; $i < count($hora) ; $i+=2) { 
+            echo '<span>' . $dia ." -> ". $hora[$i] . "-" . $hora[$i+1] . '</span>' ;
+            echo '<br>';
+        }    
+    }
+}
 echo    '</ul>';
 echo '</body>';
 echo '</html>';
