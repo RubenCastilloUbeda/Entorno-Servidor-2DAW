@@ -41,19 +41,51 @@ if (!array_key_exists($equipamiento,$componentes["Equipamiento"])) {
 }
 
 $accesorios=$_POST["Accesorios"] ?? [];
-if (!array_key_exists($equipamiento,$componentes["Accesorios[]"])) {
-    echo "No has seleccionado ninguna opcion valida.";
+if (!array_key_exists($equipamiento,$componentes["Accesorios"])) {
+    echo "No has seleccionado ningun accesorio valido.";
+} else {
+    echo "Ningun accesorio seleccionado.";
 }
 
 $cantidad=$_POST["cantidad"] ?? "";
-if ($cantidad <= 0) {
-    echo "Debes indicar una cantidad mayor que 0";
+if ($cantidad <= 0 || $cantidad >= 5) {
+    echo "Debes indicar una cantidad entre 1 y 5";
 }
 
 $codigoDescuento=$_POS["codigo_descuento"] ?? "";
-if (!array_key_exists($codigoDescuento,array_keys($codigosDescuento))) {
-    echo "No has seleccionado un codigo de descuento valido.";
+if (!array_key_exists($codigoDescuento,$codigosDescuento)) {
+    $codigoDescuento= "No has seleccionado un codigo de descuento valido.";
+} else {
+    $codigoDescuento ="No utilizaste ningun codigo de descuento";
 }
 
+$precioTotal=0;
+
+$valorModelo=$componentes["Modelo"][$modelo];
+echo $valorModelo;
 
 
+/* ========================= HTML ================================ */
+
+echo '<!DOCTYPE html>';
+echo '<html lang="es">';
+echo '<head>';
+echo     '<meta charset="UTF-8">';
+echo     '<meta name="viewport" content="width=device-width, initial-scale=1.0">';
+echo     '<title>Concesionario PHP</title>';
+echo '</head>';
+echo '<body>';
+echo    '<h1>' . "Presupuesto de tu coche " . '</h1>';
+echo    '<h3>' . "Modelo: " . $modelo . '</h3>';
+echo    '<h3>' . "Motor: " . $motor . '</h3>';
+echo    '<h3>' . "Color: " . $color . '</h3>';
+echo    '<h3>' . "Llantas: " . $llantas . '</h3>';
+echo    '<h3>' . "Equipamiento: " . $equipamiento . '</h3>';
+echo    '<h3>' . "Accesorios seleccionados: " . '</h3>';
+    foreach ($accesorios as $accesorio) {
+        echo '<li>'. $accesorio .'</li>';
+    }
+echo    '<h3>' . "Codigo de descuento: " . '</h3>';
+echo '<div>' . $codigoDescuento . '</div>';
+echo '</body>';
+echo '</html>';
