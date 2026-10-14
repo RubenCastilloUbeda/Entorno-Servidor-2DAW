@@ -49,11 +49,11 @@ echo '</div>
 <fieldset>
     <label for="respuesta"></label>
     <label for="respuesta">' . $respuesta1 . '</label>
-    <input type="radio" name="respuestas" id="respuesta1">
+    <input type="radio" name="respuestas[' . $i . ']" value="' . htmlspecialchars($respuesta1, ENT_QUOTES, 'UTF-8') . '">    
     <label for="respuesta">' . $respuesta2 . '</label>
-    <input type="radio" name="respuestas" id="respuesta2">
+    <input type="radio" name="respuestas[' . $i . ']" value="' . htmlspecialchars($respuesta2, ENT_QUOTES, 'UTF-8') . '">
     <label for="respuesta">' . $respuesta3 . '</label>
-    <input type="radio" name="respuestas" id="respuesta3">
+    <input type="radio" name="respuestas[' . $i . ']" value="' . htmlspecialchars($respuesta3, ENT_QUOTES, 'UTF-8') . '">
 </fieldset>';
 }
 echo '<button type="submit">Corregir test</button>
