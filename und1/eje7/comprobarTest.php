@@ -34,18 +34,11 @@ echo '<!DOCTYPE html>
 <h1>Resultados del test</h1>';
 
 for ($i = 0; $i < count($preguntas); $i++) {
-    echo '<p><strong>Pregunta:</strong> '
-        . htmlspecialchars($preguntas[$i], ENT_QUOTES, 'UTF-8')
-        . '</p>';
+    echo '<p><strong>Pregunta:</strong> ' . htmlspecialchars($preguntas[$i], ENT_QUOTES, 'UTF-8') . '</p>';
 
-    echo '<p><strong>Tu respuesta:</strong> '
-        . htmlspecialchars($respuestasUsuario[$i] ?? 'Sin responder', ENT_QUOTES, 'UTF-8')
-        . '</p>';
+    echo '<p><strong>Tu respuesta:</strong> ' . htmlspecialchars($respuestasUsuario[$i] ?? 'Sin responder', ENT_QUOTES, 'UTF-8') . '</p>';
 
-    echo '<p><strong>Respuesta correcta:</strong> '
-        . htmlspecialchars($respuestasCorrectas[$i], ENT_QUOTES, 'UTF-8')
-        . '</p>';
+    echo '<p><strong>Respuesta correcta:</strong> ' . htmlspecialchars($respuestasCorrectas[$i], ENT_QUOTES, 'UTF-8') . '</p>';
 }
-
 echo '</body>
 </html>';

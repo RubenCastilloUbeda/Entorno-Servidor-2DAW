@@ -22,7 +22,8 @@ if ($numeroPreguntas <= 0 || $numeroPreguntas > 5) {
     exit ("Debes indicar un número entre 1 y 5");
 }
 
-$preguntasAleatorias = array_rand($repositorioPreguntas[$asignatura], $numeroPreguntas);
+/* con (array) delante le digo que siempre me devuelva un tipo array, sea 1 elemento o varios. Evita fallo count($array)*/
+$preguntasAleatorias = (array) array_rand($repositorioPreguntas[$asignatura], $numeroPreguntas);
 
 
 
