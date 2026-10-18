@@ -9,51 +9,228 @@ require_once __DIR__ . '/horario.php'; // Datos de días, tramos horarios y asig
 //    de los tramos que correspondan a las asignaturas seleccionadas.
 // En horario.php están los datos iniciales; la lógica debes escribirla aquí.
 
+function calcularDuracionHoras($horaInicio, $horaFin){
+    return (strtotime($horaFin) - strtotime($horaInicio)) / 3600;
+}
+
+function encontrarAsignatura($dia, $horaInicio){
+    global $horario;
+
+    $asignaturaEncontrada = "";
+    $horaInicio = str_replace(":", "", $horaInicio);
+
+    foreach ($horario as $asignatura => $horarioAsignatura) {
+
+        if (isset($horarioAsignatura[$dia])) {
+
+            $horas = $horarioAsignatura[$dia];
+
+            // Recorremos las horas de dos en dos:
+            // índice par = inicio
+            // índice impar = fin
+            for ($i = 0; $i + 1 < count($horas); $i += 2) {
+
+                $horaInicioAsignatura = str_replace(":", "", $horas[$i]);
+                $horaFinAsignatura = str_replace(":", "", $horas[$i + 1]);
+
+                if (
+                    $horaInicio >= $horaInicioAsignatura &&
+                    $horaInicio < $horaFinAsignatura
+                ) {
+                    return $asignatura;
+                }
+            }
+        }
+    }
+
+    return $asignaturaEncontrada;
+}
+
+
+/* -------------------------
+   VALIDACIÓN DEL FORMULARIO
+------------------------- */
+
 if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
     http_response_code(405);
     exit('Envía el formulario mediante POST.');
 }
 
-function mostrar($valor): string {
-    return htmlspecialchars((string) $valor, ENT_QUOTES, 'UTF-8');
+$asignaturasMatriculadas = $_POST['asignaturas'] ?? [];
+
+if (!is_array($asignaturasMatriculadas) || $asignaturasMatriculadas === []) {
+    exit('Selecciona al menos una asignatura.');
 }
 
-$asignaturasValidas = array_keys($horario);
+foreach ($asignaturasMatriculadas as $asignatura) {
 
-$asignaturas = $_POST['asignaturas'] ?? []; /* [] significa que llega vacio / cuando es un array no se pone el nombre del name del html con []*/
-foreach ($asignaturas as $asignatura) {
-    if (!in_array($asignatura, $asignaturasValidas, true)) {
-        exit("Asignatura no valida.");
+    if (!is_string($asignatura) || !array_key_exists($asignatura, $horario)) {
+        exit('Se ha enviado una asignatura no válida.');
     }
 }
 
-echo 'Pendiente de implementar el ejercicio 05.';
-echo '<!DOCTYPE html>';
-echo '<html lang="en">';
-echo '<head>';
-echo     '<meta charset="UTF-8">';
-echo     '<meta name="viewport" content="width=device-width, initial-scale=1.0">';
-echo     '<title>Document</title>';
-echo '</head>';
-echo '<body>';
-echo    '<h1>' . "Asignaturas -> " . '</h1>';
-echo    '<ul>';
+$asignaturasMatriculadas = array_unique($asignaturasMatriculadas);
 
-    if (!$asignaturas) {
-        echo '<li>Ninguna seleccionada</li>';
+
+/* -------------------------
+   MOSTRAR HORARIOS
+------------------------- */
+
+$horasSemanales = 0;
+
+echo "<h1>Tu horario semanal</h1>";
+
+foreach ($asignaturasMatriculadas as $asignatura) {
+
+    echo "<h3>La asignatura $asignatura tiene este horario:</h3>";
+
+    echo "<ul>";
+
+    foreach ($horario[$asignatura] as $dia => $horas) {
+
+        echo "<li>$dia: ";
+
+        // Recorremos todos los tramos de dos en dos
+        for ($i = 0; $i + 1 < count($horas); $i += 2) {
+
+            $horaInicio = $horas[$i];
+            $horaFin = $horas[$i + 1];
+
+            $horasSemanales += calcularDuracionHoras(
+                $horaInicio,
+                $horaFin
+            );
+
+            echo "$horaInicio a $horaFin";
+
+            // Si todavía quedan más tramos horarios
+            if ($i + 2 < count($horas)) {
+                echo " y ";
+            }
+        }
+
+        echo "</li>";
     }
 
-    foreach ($asignaturas as $asignatura) {
-    $datos=$horario[$asignatura];
-    echo '<span>' . $asignatura . '</span>';
-    echo '<br>'; 
-    foreach ($datos as $dia => $hora) {
-        for ($i=0; $i < count($hora) ; $i+=2) { 
-            echo '<span>' . $dia ." -> ". $hora[$i] . "-" . $hora[$i+1] . '</span>' ;
-            echo '<br>';
-        }    
-    }
+    echo "</ul>";
 }
-echo    '</ul>';
-echo '</body>';
-echo '</html>';
+
+echo "<h3>Te has matriculado de $horasSemanales horas a la semana</h3>";
+
+?>
+
+<style>
+
+    table {
+        border-collapse: collapse;
+        margin: 1rem 0;
+        font-family: sans-serif;
+    }
+
+    th,
+    td {
+        border: 1px solid #8f9cae;
+        padding: .5rem;
+        text-align: center;
+    }
+
+    th {
+        background: #203d70;
+        color: #fff;
+    }
+
+    .DAW {
+        background: #d9edff;
+    }
+
+    .DIW {
+        background: #fce5cd;
+    }
+
+    .DWEC {
+        background: #e2efda;
+    }
+
+    .DWES {
+        background: #eadcf8;
+    }
+
+    .IPE_II {
+        background: #fff2cc;
+    }
+
+    .Proyecto {
+        background: #f8d8df;
+    }
+
+    .Ingles {
+        background: #d2f0ed;
+    }
+
+    .Optativa {
+        background: #e0e4e9;
+    }
+
+</style>
+
+
+<table>
+
+    <thead>
+
+        <tr>
+            <th></th>
+            <th>Lunes</th>
+            <th>Martes</th>
+            <th>Miércoles</th>
+            <th>Jueves</th>
+            <th>Viernes</th>
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+        <?php
+
+        foreach ($horasHorario as $hora) {
+
+            $horaInicio = $hora[0];
+            $horaFin = $hora[1];
+
+            echo "<tr>";
+
+            echo "<td>$horaInicio - $horaFin</td>";
+
+            foreach ($diasSemana as $dia) {
+
+                $asignaturaQueToca = encontrarAsignatura(
+                    $dia,
+                    $horaInicio
+                );
+
+                if (
+                    in_array(
+                        $asignaturaQueToca,
+                        $asignaturasMatriculadas
+                    )
+                ) {
+
+                    echo "<td class='$asignaturaQueToca'>
+                            $asignaturaQueToca
+                          </td>";
+
+                } else {
+
+                    echo "<td></td>";
+                }
+            }
+
+            echo "</tr>";
+        }
+
+        ?>
+
+    </tbody>
+
+</table>
