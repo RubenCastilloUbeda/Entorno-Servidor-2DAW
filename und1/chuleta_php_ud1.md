@@ -761,6 +761,10 @@ foreach ($asignaturas as $asignatura) {
 }
 ```
 
+Importante: los valores recibidos por $_POST son cadenas de texto, aunque el campo HTML sea type="number". Después tendrás que validar que sean enteros mayores o iguales a 0.
+
+
+En resumen: cuando escribes name="votos[PSOE]" en HTML, estás indicando a PHP que guarde ese valor dentro del array votos, utilizando PSOE como clave.
 ---
 
 ## 📌 Regla mental para formularios

@@ -14,20 +14,20 @@ $valor = es la variable que queremos comprobar */
 htmlspecialchars((string) $valor, ENT_QUOTES, 'UTF-8');
 
 // validar texto cogiendo claves de un array ya creado
-$modelo = $_POST["Modelo"] ?? "";
-if (!array_key_exists($modelo, $componentes["Modelo"])) {
-    exit("No has seleccionado ninguna opcion valida.");
+$partido = $_POST['partido'] ?? '';
+if (!is_string($partido) || trim($partido) === '' || !in_array($partido, $partidos, true)) {
+    exit('Partido no válido.');
 }
 
-// validar un array con checkbox seleccionas varias opciones
-$accesorios = $_POST["Accesorios"] ?? [];
-if ($accesorios == []) {
-    echo "Ningun accesorio seleccionado";
-} else {
-    foreach ($accesorios as $accesorio) {
-        if (!array_key_exists($accesorio, $componentes["Accesorios"])) {
-            echo "No has seleccionado ningun accesorio valido.";
-        }
+// validar un array con checkbox seleccionas varias opciones empty comprueba que minimo selecciones uno (poner solo si lo pide)
+$extrasSeleccionados = $_POST['extras'] ?? [];
+if (!is_array($extrasSeleccionados) || empty($extrasSeleccionados)) {
+    exit('Formato de extras no válido.');
+}
+
+foreach ($extrasSeleccionados as $extra) {
+    if (!is_string($extra) || !in_array($extra, $opcionesValidas, true)) {
+        exit('Hay un extra no válido.');
     }
 }
 
@@ -42,7 +42,7 @@ $codigoDescuento = $_POST["codigo_descuento"] ?? "";
 if ($codigoDescuento == "") {
     echo "No utilizaste ningun codigo de descuento";
 } else {
-    if (!array_key_exists($codigoDescuento, $codigosDescuento)) {
+    if (!is_string($codigoDescuento) || !array_key_exists($codigoDescuento, $codigosDescuento)) {
         exit ("No has seleccionado un codigo de descuento valido.");
     } else {
         $cantidadDescuento = $codigosDescuento[$codigoDescuento];
