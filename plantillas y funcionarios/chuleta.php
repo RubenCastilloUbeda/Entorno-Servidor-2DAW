@@ -51,3 +51,9 @@ if ($codigoDescuento == "") {
 
 // seleccionar aleatorias de un array
 $seleccionadas = (array) array_rand($repositorioPreguntas[$asignatura], $cantidad);
+
+// Lo importante: fíjate en cómo guardar en un array asociativo dentro de otro:
+$posiblesPactos[$partido] = [
+    'escanos' => $nuevosEscanos,
+    'mayoria' => $nuevosEscanos >= $mayoria
+];
