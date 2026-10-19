@@ -1,4 +1,3 @@
-```php
 <?php
 
 // 1. Mostrar una variable escapando su contenido

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulario de ejemplo</title>
+</head>
+<body>
+    <h1>Formulario de ejemplo</h1>
+    <form action="procesar.php" method="post">
+        <div>
+            <label for="nombre">Nombre</label>
+            <input type="text" name="nombre" id="nombre" minlength="2" maxlength="30" required>
+        </div>
+        <div>
+            <label for="edad">Edad</label>
+            <input type="number" name="edad" id="edad" min="0" max="130" step="1" required>
+        </div>
+        <div>
+            <label for="peso">Peso</label>
+            <input type="number" name="peso" id="peso" min="20" max="500" step="any" required>
+        </div>
+        <div>
+            <label for="email">Email</label>
+            <input type="email" name="email" id="email" required>
+        </div>
+        <div>
+            <label for="comentario">Comentario opcional</label>
+            <textarea name="comentario" id="comentario"></textarea>
+        </div>
+        <fieldset>
+            <legend>Turno</legend>
+            <label><input type="radio" name="turno" value="manana" required> Mañana</label>
+            <label><input type="radio" name="turno" value="tarde" required> Tarde</label>
+        </fieldset>
+        <div>
+            <label for="curso">Curso</label>
+            <select name="curso" id="curso" required>
+                <option value="">Selecciona...</option>
+                <option value="primero">Primero</option>
+                <option value="segundo">Segundo</option>
+            </select>
+        </div>
+        <fieldset>
+            <legend>Aficiones (opcionales)</legend>
+            <label><input type="checkbox" name="aficiones[]" value="cine"> Cine</label>
+            <label><input type="checkbox" name="aficiones[]" value="musica"> Música</label>
+            <label><input type="checkbox" name="aficiones[]" value="deporte"> Deporte</label>
+        </fieldset>
+        <button type="submit">Enviar</button>
+    </form>
+</body>
+</html>
