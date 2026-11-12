@@ -10,36 +10,47 @@ if (isset($_SESSION['nombre'])) {
     exit;
 }
 
-if (time() < $_SESSION['bloqueado_hasta']) {
-    exit;
+// evita un warnnig si $_SESSION['bloqueado_hasta'] ?? 0 aún no existe al hacer la comprobacion
+$bloqueadoHasta = $_SESSION['bloqueado_hasta'] ?? 0;
+// comprobar si sesion tiene bloqueo
+if ($bloqueadoHasta > 0 && time() >= $bloqueadoHasta) {
+    $_SESSION['intentos']=0;
+    $_SESSION['bloqueado_hasta']=0;
+    $bloqueadoHasta = 0;
 }
 
 // TODO: verificar credenciales 
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $email = trim((string) $_POST['correo'] ?? null);
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && time() >= $bloqueadoHasta) {
+    $email = strtolower(trim($_POST['correo']));
     $password = (string) $_POST['pass'] ?? "";
 
     $cuentas = obtenerCuentas();
     if (!isset($cuentas[$email])) {
         $nombre = null;
-    }
-
-    if (!password_verify($password, $cuentas[$email]['hash'])) {
-        $nombre = null;
     } else {
-        $nombre = $cuentas[$email]['nombre'];
+        if (!password_verify($password, $cuentas[$email]['hash'])) {
+            $nombre = null;
+        } else {
+            $nombre = $cuentas[$email]['nombre'];
+        }
+    }
+    
+
+// TODO: gestionar los intentos fallidos y el bloqueo de 90 segundos.
+    $_SESSION['intentos'] = $_SESSION['intentos'] ?? 0;
+
+    // Si las credenciales son incorrectas
+    if ($nombre === null) {
+        $_SESSION['intentos']++;
+
+        if ($_SESSION['intentos'] >= 3) {
+            $_SESSION['bloqueado_hasta'] = time() + 90;
+            $bloqueadoHasta = $_SESSION['bloqueado_hasta'];
+        }
     }
 }
 
-// comprobar y aumentar intentos 
-if ($_SERVER['REQUEST_METHOD'] !== 'POST' || $nombre === null || $email === null) {
-    if ($_SESSION['intentos']<3) {
-        $_SESSION['intentos']+=1;
-    } else {
-        $_SESSION['bloqueado_hasta']=time()+90;
-    } 
-}
 
 // TODO: regenerar el ID y guardar el inicio.
 if ($nombre !== null) {
@@ -49,14 +60,10 @@ if ($nombre !== null) {
     $_SESSION['tiempo'] = time();
     $_SESSION['movimientos'] = [];
     $_SESSION['intentos'] = 0;
-    $_SESSION['bloqueado_hasta'] = null;
+    $_SESSION['bloqueado_hasta'] = 0;
     header('Location: panel.php');
     exit;
 }
-
-// TODO: gestionar los intentos fallidos y el bloqueo de 90 segundos.
-
-
 
 
 
@@ -72,7 +79,15 @@ if ($nombre !== null) {
 <body>
     <h1>Identificación</h1>
     <!-- TODO: avisos, bloqueo y formulario de acceso. -->
-    <form action="login.php" method="post">
+    <?php if ($bloqueadoHasta - time() > 0): ?>
+    <p>
+        Acceso bloqueado.
+        Debes esperar <?= $bloqueadoHasta - time() ?> segundos.
+    </p>
+<?php endif; ?>
+
+<p>Intentos fallidos: <?= $_SESSION['intentos'] ?? 0 ?></p>
+    <form action="acceso.php" method="post">
         <label for="correo">Correo
             <input type="email" name="correo" id="correo">
         </label>
