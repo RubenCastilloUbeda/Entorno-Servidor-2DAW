@@ -38,7 +38,7 @@ if (!isset($_SESSION['nombre'])) {
         </tr>
         <?php foreach ($incidencias as $id => $incidencia): ?>
             <tr>
-                <td><?= htmlspecialchars($id)  ?></td>
+                <td><?= $id ?></td>
                 <td><?= htmlspecialchars($incidencia['aula'])  ?></td>
                 <td><?= htmlspecialchars($incidencia['descripcion'])  ?></td>
                 <?php if (in_array($id, $_SESSION['revisadas'] ?? [], true)): ?>
