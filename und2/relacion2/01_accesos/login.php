@@ -11,8 +11,7 @@ if (isset($_SESSION['nombre'])) {
     header('Location: panel.php');
     exit;
     }
-    
-    
+
     $error = '';
 
 // TODO: validar las credenciales recibidas por POST.

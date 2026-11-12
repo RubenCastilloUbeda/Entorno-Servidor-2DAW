@@ -16,13 +16,12 @@ if (($_SESSION['perfil']) !== 'coordinacion') {
     http_response_code(403);
     exit;
 } else {
-    header("Location:panel.php");
+    $totalIncidencias = count($incidencias);
+    $totalRevisadas = count($_SESSION['revisadas'] ?? []);
+    $totalPendientes = $totalIncidencias - $totalRevisadas;
 }
 
 // TODO: calcular revisadas y pendientes.
-$totalIncidencias = count($incidencias);
-$totalRevisadas = count($_SESSION['revisadas'] ?? []);
-$totalPendientes = $totalIncidencias - $totalRevisadas;
 
 ?>
 <!doctype html>

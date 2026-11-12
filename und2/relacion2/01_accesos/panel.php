@@ -48,15 +48,17 @@ if (!isset($_SESSION['nombre'])) {
                     <td><?= 'Pendiente' ?></td>
                     <td>
                         <form action="revisar.php" method="post">
-                            <input type="hidden" name="id" value="<?= htmlspecialchars($id) ?>">
+                            <input type="hidden" name="id" value="<?= $id ?>">
                             <button type="submit">Marcar como revisada</button>
                         </form>
                     </td>
                 <?php endif; ?>
             </tr>
-            <?php endforeach; ?>
+        <?php endforeach; ?>
     </table>
     <!-- TODO: enlace al informe y formulario POST de cierre de sesión. -->
+    <a href="informe.php">Informe</a>
+
     <form action="logout.php" method="post">
         <button type="submit">Cerrar sesión</button>
     </form>
