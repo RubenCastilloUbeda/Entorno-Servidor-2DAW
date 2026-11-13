@@ -14,8 +14,8 @@ if (isset($_SESSION['nombre'])) {
 $bloqueadoHasta = $_SESSION['bloqueado_hasta'] ?? 0;
 // comprobar si sesion tiene bloqueo
 if ($bloqueadoHasta > 0 && time() >= $bloqueadoHasta) {
-    $_SESSION['intentos']=0;
-    $_SESSION['bloqueado_hasta']=0;
+    $_SESSION['intentos'] = 0;
+    $_SESSION['bloqueado_hasta'] = 0;
     $bloqueadoHasta = 0;
 }
 
@@ -35,9 +35,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && time() >= $bloqueadoHasta) {
             $nombre = $cuentas[$email]['nombre'];
         }
     }
-    
 
-// TODO: gestionar los intentos fallidos y el bloqueo de 90 segundos.
+
+    // TODO: gestionar los intentos fallidos y el bloqueo de 90 segundos.
     $_SESSION['intentos'] = $_SESSION['intentos'] ?? 0;
 
     // Si las credenciales son incorrectas
@@ -48,24 +48,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && time() >= $bloqueadoHasta) {
             $_SESSION['bloqueado_hasta'] = time() + 90;
             $bloqueadoHasta = $_SESSION['bloqueado_hasta'];
         }
+    } else {
+        // TODO: regenerar el ID y guardar el inicio.
+        session_regenerate_id(true);
+        $_SESSION['nombre'] = $nombre;
+        $_SESSION['correo'] = $email;
+        $_SESSION['ultimoAcceso'] = time();
+        $_SESSION['movimientos'] = [];
+        $_SESSION['intentos'] = 0;
+        $_SESSION['bloqueado_hasta'] = 0;
+        header('Location: panel.php');
+        exit;
     }
 }
 
-
-// TODO: regenerar el ID y guardar el inicio.
-if ($nombre !== null) {
-    session_regenerate_id(true);
-    $_SESSION['nombre'] = $nombre;
-    $_SESSION['correo'] = $email;
-    $_SESSION['tiempo'] = time();
-    $_SESSION['movimientos'] = [];
-    $_SESSION['intentos'] = 0;
-    $_SESSION['bloqueado_hasta'] = 0;
-    header('Location: panel.php');
-    exit;
+$errorExpirada = "";
+if (($_GET['motivo'] ?? '') === 'expirada') {
+    $errorExpirada = "Sesion expirada pasados 180 segundos";
 }
-
-
 
 ?>
 <!doctype html>
@@ -80,13 +80,14 @@ if ($nombre !== null) {
     <h1>Identificación</h1>
     <!-- TODO: avisos, bloqueo y formulario de acceso. -->
     <?php if ($bloqueadoHasta - time() > 0): ?>
-    <p>
-        Acceso bloqueado.
-        Debes esperar <?= $bloqueadoHasta - time() ?> segundos.
-    </p>
-<?php endif; ?>
+        <p>
+            Acceso bloqueado.
+            Debes esperar <?= $bloqueadoHasta - time() ?> segundos.
+        </p>
+    <?php endif; ?>
+    <h2><?= $errorExpirada ?></h2>
 
-<p>Intentos fallidos: <?= $_SESSION['intentos'] ?? 0 ?></p>
+    <p>Intentos fallidos: <?= $_SESSION['intentos'] ?? 0 ?></p>
     <form action="acceso.php" method="post">
         <label for="correo">Correo
             <input type="email" name="correo" id="correo">

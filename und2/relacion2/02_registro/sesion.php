@@ -14,7 +14,7 @@ function comprobarSesion() {
     }
 
     // Comprobar si han pasado más de 180 segundos
-    if (time() - ($_SESSION['tiempo'] ?? 0) > 180) {
+    if (time() - ($_SESSION['ultimoAcceso'] ?? 0) > 180) {
 
         $_SESSION = [];
         if (ini_get('session.use_cookies')) {
@@ -37,7 +37,7 @@ function comprobarSesion() {
     }
 
     // Si no ha caducado, actualizar la última actividad
-    $_SESSION['tiempo'] = time();
+    $_SESSION['ultimoAcceso'] = time();
 }
 
 
