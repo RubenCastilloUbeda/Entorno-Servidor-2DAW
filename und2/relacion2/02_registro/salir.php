@@ -5,7 +5,7 @@ session_start();
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
-    exit('Método no permitido.');
+    exit;
 }
 // TODO: cerrar por completo la sesión y caducar la cookie.
 // Vaciar los datos de la sesión

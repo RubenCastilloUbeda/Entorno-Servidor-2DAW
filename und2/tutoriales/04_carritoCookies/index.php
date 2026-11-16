@@ -2,15 +2,20 @@
 
 declare(strict_types=1);
 require_once __DIR__ . '/productos.php';
+
 function h(string $valor): string
 {
     return htmlspecialchars($valor, ENT_QUOTES, 'UTF-8');
 }
+
 $carrito = json_decode($_COOKIE['carrito_demo'] ?? '{}', true);
+
 if (!is_array($carrito)) {
     $carrito = [];
 }
+
 $total = 0.0;
+
 foreach ($productos as $id => $producto) {
     $cantidad = filter_var(
         $carrito[$id] ?? 0,
@@ -19,6 +24,7 @@ foreach ($productos as $id => $producto) {
     );
     $total += ($cantidad === false ? 0 : $cantidad) * $producto->getPrecio();
 }
+
 ?>
 <!doctype html>
 <html lang="es">

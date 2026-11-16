@@ -5,6 +5,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
     exit;
 }
+
 setcookie('carrito_demo', '', [
     'expires' => time() - 3600,
     'path' => '/',
@@ -12,5 +13,7 @@ setcookie('carrito_demo', '', [
     'httponly' => true,
     'samesite' => 'Lax'
 ]);
+
+
 header('Location: index.php');
 exit;
