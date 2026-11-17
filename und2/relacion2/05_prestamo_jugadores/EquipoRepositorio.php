@@ -1,9 +1,11 @@
 <?php
 
 declare(strict_types=1);
+
 class EquipoRepositorio
 {
     public function __construct(private PDO $pdo) {}
+
     public function listarEquipos(): array
     {
         // TODO: SELECT y disponibilidad agregada.
